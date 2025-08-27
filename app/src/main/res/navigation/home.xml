@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home"
+    app:startDestination="@id/menu1">
+
+    <fragment
+        android:id="@+id/menu1"
+        android:name="com.example.holly.Presentacion.ui.Match.MatchFragment"
+        android:label="fragment_match"
+        tools:layout="@layout/fragment_match" />
+    <fragment
+        android:id="@+id/usuario"
+        android:name="com.example.holly.Presentacion.ui.Chat.ChatFragment"
+        android:label="fragment_chat"
+        tools:layout="@layout/fragment_chat" />
+    <fragment
+        android:id="@+id/sttings"
+        android:name="com.example.holly.Presentacion.ui.GenteCerca.GenteCercaFragment"
+        android:label="fragment_gente_cerca"
+        tools:layout="@layout/fragment_gente_cerca" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.holly.Presentacion.ui.Settings.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" />
+</navigation>

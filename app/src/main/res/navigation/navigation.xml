@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/splashFragment">
+
+    <fragment
+        android:id="@+id/registrerLoginFragment"
+        android:name="com.example.holly.Presentacion.ui.RegistrerLogin.RegistrerLoginFragment"
+        android:label="fragment_registrer_login"
+        tools:layout="@layout/fragment_registrer_login" >
+
+        <action
+            android:id="@+id/action_registrerLoginFragment_to_homeActivity"
+            app:destination="@id/homeActivity" />
+    </fragment>
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.example.holly.Presentacion.ui.Splash.SplashFragment"
+        android:label="fragment_splash"
+        tools:layout="@layout/fragment_splash" >
+
+        <action
+            android:id="@+id/action_splashFragment_to_registrerLoginFragment"
+            app:destination="@id/registrerLoginFragment" />
+        <action
+            android:id="@+id/action_splashFragment_to_homeActivity"
+            app:destination="@id/homeActivity" />
+    </fragment>
+    <activity
+        android:id="@+id/homeActivity"
+        android:name="com.example.holly.Presentacion.ui.Home.HomeActivity"
+        android:label="activity_home"
+        tools:layout="@layout/activity_home" />
+</navigation>
