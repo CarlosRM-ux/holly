@@ -1,4 +1,4 @@
-package com.example.holly.Presentacion.ui.settings
+package com.example.holly.presentacion.ui.settings
 
 
 import android.net.Uri
