@@ -1,4 +1,4 @@
-package com.example.holly.presentacion.ui.settings
+package com.example.holly.Presentacion.ui.settings
 
 
 import android.net.Uri
@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class SetttingsViewModel @Inject constructor(private val repository: SettingsRepository): ViewModel() {
+class SettingsViewModel @Inject constructor(private val repository: SettingsRepository): ViewModel() {
 
         private val _uiState = MutableStateFlow<UiState>(UiState.Idle)
         val uiState : StateFlow<UiState> = _uiState

@@ -84,7 +84,7 @@ dependencies {
     // Hilt main dependency
     implementation(libs.hilt.android)
     implementation(libs.androidx.navigation.fragment)
-    implementation(libs.firebase.firestore.ktx)
+    implementation(libs.firebase.firestore)
 
 
 
