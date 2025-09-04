@@ -16,7 +16,7 @@
         android:label="fragment_chat"
         tools:layout="@layout/fragment_chat" />
     <fragment
-        android:id="@+id/sttings"
+        android:id="@+id/genteCerca"
         android:name="com.example.holly.Presentacion.ui.GenteCerca.GenteCercaFragment"
         android:label="fragment_gente_cerca"
         tools:layout="@layout/fragment_gente_cerca" />

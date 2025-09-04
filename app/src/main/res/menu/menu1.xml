@@ -12,7 +12,7 @@
         android:icon="@drawable/icons_usuario_32"/>
 
     <item
-        android:id="@+id/sttings"
+        android:id="@+id/settingsFragment"
         android:title="@string/match"
         android:icon="@drawable/megustas"/>
 
