@@ -29,6 +29,7 @@ class SettingsViewModel @Inject constructor(private val repository: SettingsRepo
         loadUserPhotos()
     }
 
+    //CARGA LAS FOTOS
     private fun loadUserPhotos() {
         viewModelScope.launch {
             repository.getUserPhotos().collect{ result: Result<List<Photo>> ->
@@ -41,6 +42,7 @@ class SettingsViewModel @Inject constructor(private val repository: SettingsRepo
         }
     }
 
+    //SUBE LAS FOTOS
     fun uploadPhoto(uri: Uri) {
         viewModelScope.launch {
             _uiState.value = UiState.Loading
@@ -49,6 +51,7 @@ class SettingsViewModel @Inject constructor(private val repository: SettingsRepo
                     is Result.Success<*> -> {
                         _uiState.value = UiState.Success("Foto subida exitosamente.")
                         loadUserPhotos() // Recarga las fotos para actualizar la UI
+
                     }
                     is Result.Error -> _uiState.value = UiState.Error(result.message)
                     is Result.Loading -> _uiState.value = UiState.Loading
