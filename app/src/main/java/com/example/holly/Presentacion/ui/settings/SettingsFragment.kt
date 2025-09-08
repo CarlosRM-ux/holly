@@ -8,16 +8,20 @@ import android.view.ViewGroup
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.GridLayoutManager
+import com.example.holly.Presentacion.adapters.Settings.SettingADAPTER
 import com.example.holly.databinding.FragmentSettingsBinding
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class SettingsFragment @Inject constructor(): Fragment() {
+class SettingsFragment : Fragment() {
     private var _binding : FragmentSettingsBinding? =null
     private val binding get() = _binding!!
     private val viewModel: SettingsViewModel by viewModels()
+    private lateinit var adapterSettings: SettingADAPTER
 
 
 
@@ -44,11 +48,28 @@ class SettingsFragment @Inject constructor(): Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         botones()
-
+        initAdapter()
+        observeViewModel()
     }
 
     private fun botones() {
         binding.agregar.setOnClickListener { pickMedia.launch(PickVisualMediaRequest(
             ActivityResultContracts.PickVisualMedia.ImageOnly)) }
+    }
+
+    private fun initAdapter(){
+        adapterSettings = SettingADAPTER(emptyList())
+        binding.photosRecyclerView.apply {
+            layoutManager = GridLayoutManager(context,3)
+            adapter = adapterSettings
+        }
+    }
+
+    private fun observeViewModel(){
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.photo.collectLatest { photos ->
+                adapterSettings.updatePhotos(photos)
+            }
+        }
     }
 }

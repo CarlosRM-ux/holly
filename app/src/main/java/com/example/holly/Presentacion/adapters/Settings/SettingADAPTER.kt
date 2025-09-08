@@ -1,15 +1,17 @@
 package com.example.holly.Presentacion.adapters.Settings
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.holly.Domain.model.Photo
 import com.example.holly.R
 
-class SettingADAPTER (private val photos: List<Photo>) : RecyclerView.Adapter<SettingsVIEWHOLDER>() {
+class SettingADAPTER (private var photos: List<Photo>) : RecyclerView.Adapter<SettingsVIEWHOLDER>() {
 
+     fun updatePhotos(newPhotos: List<Photo>){
+        this.photos = newPhotos
+        notifyDataSetChanged()
+    }
 
 
     // 2. Infla el layout del elemento de la lista (list item layout)
