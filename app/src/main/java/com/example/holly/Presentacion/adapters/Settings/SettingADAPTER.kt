@@ -1,5 +1,6 @@
 package com.example.holly.Presentacion.adapters.Settings
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -9,7 +10,8 @@ import com.example.holly.R
 class SettingADAPTER (private var photos: List<Photo>) : RecyclerView.Adapter<SettingsVIEWHOLDER>() {
 
      fun updatePhotos(newPhotos: List<Photo>){
-        this.photos = newPhotos
+         Log.d("SettingADAPTER", "Actualizando adaptador con ${newPhotos.size} fotos")
+         this.photos = newPhotos
         notifyDataSetChanged()
     }
 
