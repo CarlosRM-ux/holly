@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.HorizontalScrollView
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
@@ -61,7 +62,7 @@ class SettingsFragment : Fragment() {
     private fun initAdapter(){
         adapterSettings = SettingADAPTER(emptyList())
         binding.photosRecyclerView.apply {
-            layoutManager = GridLayoutManager(context,3)
+            layoutManager = GridLayoutManager(context,1, GridLayoutManager.HORIZONTAL,false)
             adapter = adapterSettings
         }
     }
