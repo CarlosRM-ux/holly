@@ -41,7 +41,7 @@ class TextAnalyzer {
 }
 
 // Ejemplo de uso
-fun main() {
+fun coldplay() {
     val analyzer = TextAnalyzer()
     val algorithm = CompatibilityAlgorithm()
 

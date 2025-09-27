@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import com.example.holly.Domain.model.Result
+import com.example.holly.Domain.model.rasgosPersonalidad.InterestCategory
 import javax.inject.Inject
 
 
@@ -24,9 +25,14 @@ class SettingsViewModel @Inject constructor(private val repository: SettingsRepo
         private val _photos = MutableStateFlow<List<Photo>>(emptyList())
         val photo : StateFlow<List<Photo>> = _photos
 
+        private val _selectInterest = MutableStateFlow<Set<InterestCategory>>(emptySet())
+        val selectedInterests : StateFlow<Set<InterestCategory>> = _selectInterest
+
     init {
         // Carga las fotos del usuario cuando se inicializa el ViewModel
         loadUserPhotos()
+        //Carga la lista de intereeses que el usuario selecciono
+        loadInterests()
     }
 
     //CARGA LAS FOTOS
@@ -67,6 +73,54 @@ class SettingsViewModel @Inject constructor(private val repository: SettingsRepo
         data class Error(val message: String) : UiState()
     }
 
+ //Seleccion de Intereses
+
+    fun toggleInterest(interest: InterestCategory){
+        viewModelScope.launch {
+
+            val currentInterest = _selectInterest.value.toMutableSet()
+            val isAdding = !currentInterest.contains(interest)
+            if (isAdding) {
+                currentInterest.add(interest)
+            } else {
+                currentInterest.remove(interest)
+            }
+            _selectInterest.value = currentInterest
+
+            repository.saveInterest(currentInterest).collect { result ->
+                when (result) {
+                    is Result.Success -> {
+
+                    }
+
+                    is Result.Error -> {
+                        _uiState.value = UiState.Error("Error al guardar: ${result.message}")
+                    }
+
+                    is Result.Loading -> {
+
+                    }
+                }
+            }
+        }
+    }
+ //TODO: NO CARGA LOS INTERESES GUARDADOS , VERIFICAR CUAL ES EL ERROR Y CORREGIRLOl
+    fun loadInterests(){
+        viewModelScope.launch { repository.loadUserInterest().collect {
+            result -> when(result){
+                is Result.Success ->{
+                    _selectInterest.value = result.data
+                }
+            is Result.Error -> {
+                // Maneja el error, por ejemplo, mostrando un mensaje
+                _uiState.value = UiState.Error(result.message)
+            }
+            is Result.Loading -> {
+                // Puedes usar este estado para mostrar un spinner en los chips
+            }
+            }
+        } }
+    }
 
 }
 

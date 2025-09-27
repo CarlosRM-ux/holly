@@ -3,6 +3,7 @@ package com.example.holly.Data.repository
 import android.net.Uri
 import com.example.holly.Domain.model.Photo
 import com.example.holly.Domain.model.Result
+import com.example.holly.Domain.model.rasgosPersonalidad.InterestCategory
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
@@ -57,4 +58,43 @@ class SettingsRepository @Inject constructor(
             emit(Result.Error(e.message ?: "Error al subir la foto y guardar la URL."))
         }
     }
+
+    fun saveInterest (interest: Set<InterestCategory>) : Flow<Result<Unit>> = flow{
+        emit(Result.Loading)
+        try {
+            val userId = auth.currentUser?.uid ?: throw Exception("Usuario no autenticado")
+            val userDocRef = database.collection("users").document(userId)
+
+            val interestName = interest.map { it.name }
+
+            userDocRef.update("interests", interestName).await()
+
+            emit(Result.Success(Unit))
+        }catch (e: Exception){
+            emit(Result.Error(e.message ?:"Error al guardar los intereses"))
+        }
+    }
+
+    fun loadUserInterest(): Flow<Result<Set<InterestCategory>>> = flow{
+        emit(Result.Loading)
+        try {
+            val userId = auth.currentUser?.uid
+                ?: throw Exception("Usuario no autenticado") //Guarda el Id del Usuario Actual
+            val userDocRef = database.collection("users")
+                .document(userId)// accede a la carpeta users del id del usuario
+
+            val documentSnapshot = userDocRef.get().await()//obtiene el documento del usuario
+
+            val interestList = documentSnapshot.get("interests") as? List<String> ?: emptyList()
+
+            val interestSet = interestList.mapNotNull { name ->
+                InterestCategory.entries.find { it.name == name }
+            }.toSet()
+            emit(Result.Success(interestSet))
+        }catch (e: Exception){
+            emit(Result.Error(e.message ?: "Error al cargar los intereses del usuario."))
+        }
+
+    }
+
 }

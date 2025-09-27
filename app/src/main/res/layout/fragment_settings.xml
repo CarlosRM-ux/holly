@@ -8,30 +8,77 @@
     android:padding="16dp"
     tools:context=".Presentacion.ui.settings.SettingsFragment">
 
-    <TextView
-        android:id="@+id/photosTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Fotos de perfil"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginBottom="8dp"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/photosTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Fotos de perfil"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/photosRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="500dp"
+                tools:itemCount="5"
+                tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                tools:listitem="@layout/item_photo"
+                tools:spanCount="3" />
+
+            <TextView
+                android:id="@+id/primero"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sobremi"
+                android:textSize="20sp"
+                android:textColor="#304FFE"
+                android:layout_marginTop="16dp"/>
+
+            <EditText
+                android:id="@+id/segundo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp" />
+
+            <TextView
+                android:id="@+id/tercero"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/intereses"
+                android:textSize="20sp"
+                android:textColor="#304FFE"
+                android:layout_marginTop="16dp"/>
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/interestsChipGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:chipSpacingHorizontal="8dp"
+                app:chipSpacingVertical="8dp" />
 
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/photosRecyclerView"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintTop_toBottomOf="@id/photosTitle"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            tools:itemCount="5"
-            tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            tools:listitem="@layout/item_photo"
-            tools:spanCount="3" />
+
+
+        </LinearLayout>
+    </ScrollView>
+
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
