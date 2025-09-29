@@ -6,10 +6,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.HorizontalScrollView
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.view.children
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
@@ -51,14 +49,11 @@ class SettingsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        setupInterestsUI()
-        observeInterests()
-
         botones()
         initAdapter()
-        observeViewModel()
 
+        observeViewModel()
+        observeInterests()
 
     }
 
@@ -86,30 +81,26 @@ class SettingsFragment : Fragment() {
         }
     }
 
-    private fun setupInterestsUI() {
-        // Itera sobre el enum y crea un Chip por cada interés
-        InterestCategory.entries.forEach { interest ->
-            val chip = Chip(requireContext()).apply {
-                text = interest.name // El texto del chip es el nombre de la constante
-                isCheckable = true
-                setOnClickListener {
-                    viewModel.toggleInterest(interest) // Llama al ViewModel en cada click
-                }
-            }
-            binding.interestsChipGroup.addView(chip) // Añade el chip al ChipGroup
-        }
-    }
+
     //TODO: Corregir el timing de observeInterest para que se actualizen los botones cuando se guarden y posteriormente se puedan ver
     private fun observeInterests() {
         // Observa los cambios en los intereses seleccionados
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.selectedInterests.collectLatest { selectedInterests ->
-                binding.interestsChipGroup.children.forEach { view ->
-                    val chip = view as Chip
-                    // Actualiza el estado del chip (seleccionado o no)
 
-                    val interest = InterestCategory.valueOf(chip.text.toString())
-                    chip.isChecked = selectedInterests.contains(interest)
+                binding.interestsChipGroup.removeAllViews()
+                InterestCategory.entries.forEach { interest ->
+                    val chip = Chip(requireContext(),).apply {
+                        // Actualiza el estado del chip (seleccionado o no)
+                        text = interest.name
+                        isCheckable = true
+
+                        isChecked = selectedInterests.contains(interest)
+                        setOnClickListener { viewModel.toggleInterest(interest) } //Le pasa el boton seleccionado al_selectdInterests
+                    // y lo guarda en firebase
+                    }
+                    binding.interestsChipGroup.addView(chip)
+
                 }
             }
         }

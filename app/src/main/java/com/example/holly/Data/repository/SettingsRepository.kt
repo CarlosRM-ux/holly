@@ -6,6 +6,7 @@ import com.example.holly.Domain.model.Result
 import com.example.holly.Domain.model.rasgosPersonalidad.InterestCategory
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -64,10 +65,10 @@ class SettingsRepository @Inject constructor(
         try {
             val userId = auth.currentUser?.uid ?: throw Exception("Usuario no autenticado")
             val userDocRef = database.collection("users").document(userId)
-
             val interestName = interest.map { it.name }
 
-            userDocRef.update("interests", interestName).await()
+            val dataToSave = mapOf("interests" to interestName)
+            userDocRef.set(dataToSave, SetOptions.merge()).await()
 
             emit(Result.Success(Unit))
         }catch (e: Exception){
