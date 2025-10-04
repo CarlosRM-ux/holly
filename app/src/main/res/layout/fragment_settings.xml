@@ -50,7 +50,7 @@
                 android:textColor="#304FFE"
                 android:layout_marginTop="16dp"/>
 
-            <EditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/segundo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -72,6 +72,60 @@
                 android:layout_marginTop="8dp"
                 app:chipSpacingHorizontal="8dp"
                 app:chipSpacingVertical="8dp" />
+
+            <TextView
+                android:id="@+id/cuarto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Personalidad"
+                android:textSize="20sp"
+                android:textColor="#304FFE"
+                android:layout_marginTop="16dp"/>
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/personalidadChipGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:chipSpacingHorizontal="8dp"
+                app:chipSpacingVertical="8dp" />
+
+            <TextView
+                android:id="@+id/quinto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Busco"
+                android:textSize="20sp"
+                android:textColor="#304FFE"
+                android:layout_marginTop="16dp"/>
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/relacionChipGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:chipSpacingHorizontal="8dp"
+                app:chipSpacingVertical="8dp" />
+
+            <TextView
+                android:id="@+id/sexto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Megusta"
+                android:textSize="20sp"
+                android:textColor="#304FFE"
+                android:layout_marginTop="16dp"/>
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/meGustaChipGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:chipSpacingHorizontal="8dp"
+                app:chipSpacingVertical="8dp" />
+
+
+
 
 
 

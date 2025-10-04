@@ -77,4 +77,7 @@
     <string name="hola_mundo">¡Hola, mundo!</string>
     <string name="sobremi">\nSobre mi</string>
     <string name="intereses">Intereses</string>
+    <string name="Personalidad">Personalidad</string>
+    <string name="Busco">En busca de</string>
+    <string name="Megusta">Intereses</string>
 </resources>

@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
@@ -16,6 +17,8 @@ import com.example.holly.Presentacion.adapters.Settings.SettingADAPTER
 import com.example.holly.databinding.FragmentSettingsBinding
 import com.google.android.material.chip.Chip
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -25,6 +28,7 @@ class SettingsFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: SettingsViewModel by viewModels()
     private lateinit var adapterSettings: SettingADAPTER
+    private var saveDescriptionJob: Job?= null
 
 
 
@@ -54,13 +58,13 @@ class SettingsFragment : Fragment() {
 
         observeViewModel()
         observeInterests()
+        setupDescriptionBinding()
 
     }
 
     private fun botones() {
         binding.agregar.setOnClickListener { pickMedia.launch(PickVisualMediaRequest(
             ActivityResultContracts.PickVisualMedia.ImageOnly)) }
-
 
     }
 
@@ -82,7 +86,6 @@ class SettingsFragment : Fragment() {
     }
 
 
-    //TODO: Corregir el timing de observeInterest para que se actualizen los botones cuando se guarden y posteriormente se puedan ver
     private fun observeInterests() {
         // Observa los cambios en los intereses seleccionados
         viewLifecycleOwner.lifecycleScope.launch {
@@ -105,4 +108,29 @@ class SettingsFragment : Fragment() {
             }
         }
     }
+
+    private fun setupDescriptionBinding(){
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.description.collectLatest { desc ->
+                if (binding.segundo.text.toString() != desc){
+                binding.segundo.setText(desc)
+                }
+            }
+
+        }
+        // 2. Implementar el guardado automático con debounce
+        binding.segundo.doOnTextChanged { text, _, _, _ ->
+            // Cancela el trabajo de guardado anterior si el usuario escribe de nuevo
+            saveDescriptionJob?.cancel()
+
+            // Crea un nuevo trabajo que espera 500ms antes de guardar
+            saveDescriptionJob = viewLifecycleOwner.lifecycleScope.launch {
+                delay(500) // DEBOUNCE: Espera medio segundo
+                val newText = text?.toString() ?: ""
+                viewModel.saveDescription(newText)
+            }
+        }
+
+    }
+
 }

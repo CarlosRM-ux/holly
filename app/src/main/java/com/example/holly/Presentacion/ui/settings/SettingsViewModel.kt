@@ -18,21 +18,26 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(private val repository: SettingsRepository): ViewModel() {
-
+//----------------------------------------------------------------------------------------------------------------------------------------
         private val _uiState = MutableStateFlow<UiState>(UiState.Idle)
         val uiState : StateFlow<UiState> = _uiState
 
         private val _photos = MutableStateFlow<List<Photo>>(emptyList())
         val photo : StateFlow<List<Photo>> = _photos
-
+//-----------------------------------------------------------------------------------------------------------------------------------------
         private val _selectInterest = MutableStateFlow<Set<InterestCategory>>(emptySet())
         val selectedInterests : StateFlow<Set<InterestCategory>> = _selectInterest
+//-----------------------------------------------------------------------------------------------------------------------------------------
+        private val _description = MutableStateFlow("")
+        val description : StateFlow<String> = _description
 
     init {
         // Carga las fotos del usuario cuando se inicializa el ViewModel
         loadUserPhotos()
         //Carga la lista de intereeses que el usuario selecciono
         loadInterests()
+        //Cargar la descripcion del Usuario
+        loadDescription()
     }
 
     //CARGA LAS FOTOS
@@ -122,5 +127,27 @@ class SettingsViewModel @Inject constructor(private val repository: SettingsRepo
         } }
     }
 
+    fun loadDescription (){
+        viewModelScope.launch {
+            repository.loadDescription().collect { result ->
+                if (result is Result.Success){
+                    _description.value = result.data
+                } else if (result is Result.Error){
+                    _uiState.value = UiState.Error(result.message)
+                }
+            }
+        }
+    }
+
+    fun saveDescription(text: String){
+        _description.value = text
+        viewModelScope.launch {
+            repository.saveDescription(text).collect {
+        result -> if (result is Result.Error){
+            _uiState.value = UiState.Error(result.message)
+        }
+            }
+        }
+    }
 }
 

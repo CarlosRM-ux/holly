@@ -19,7 +19,10 @@ class SettingsRepository @Inject constructor(
     private val database: FirebaseFirestore,
     private val storage: FirebaseStorage) {
 
+    //------------__________________________________________________________________________________________________________
     // Obtiene todas las fotos del usuario desde Realtime Database
+    //______________________________________________________________________________________________________________________
+
     fun getUserPhotos(): Flow<Result<List<Photo>>> = flow {
         emit(Result.Loading)
         try {
@@ -39,6 +42,9 @@ class SettingsRepository @Inject constructor(
     }
 
     // Sube una foto a Firebase Storage y guarda su URL en Realtime Database
+    //-------------------------------------------------------------------------------------------
+    //-------------------------------------------------------------------------------------------
+
     fun uploadPhotoAndSaveUrl(uri: Uri): Flow<Result<Unit>> = flow {
         emit(Result.Loading)
         try {
@@ -60,6 +66,10 @@ class SettingsRepository @Inject constructor(
         }
     }
 
+    //------------------------------------------------------------------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------------------------------------------------------------------
+    //_____CREA LA CARPETA INTERESTS Y GUARDA LOS INTEREESES SELECCIONADOS___________________________________________________________________
+
     fun saveInterest (interest: Set<InterestCategory>) : Flow<Result<Unit>> = flow{
         emit(Result.Loading)
         try {
@@ -75,6 +85,10 @@ class SettingsRepository @Inject constructor(
             emit(Result.Error(e.message ?:"Error al guardar los intereses"))
         }
     }
+
+    //---------------------------------------------------------------------------------------------------------------------------------------
+    //--------------------------------------------------------------------------------------------------------------------------------------
+    //______________OBTIENE LOS INTERESES GUARDADOS Y LOS CONVIERTE EN UNA LISTA DE STRINGS_________________________________________________
 
     fun loadUserInterest(): Flow<Result<Set<InterestCategory>>> = flow{
         emit(Result.Loading)
@@ -97,5 +111,37 @@ class SettingsRepository @Inject constructor(
         }
 
     }
+    //---------------------------------------------------------------------------------------------------------------------------------------
+    //---------------------------------------------------------------------------------------------------------------------------------------
+    //________Crea y Guarda la descripcion del Usuario___________________________________________________________________________________
 
+    fun saveDescription (description: String): Flow<Result<Unit>> = flow {
+        emit(Result.Loading)
+        try {
+            val userId = auth.currentUser?.uid ?: throw Exception("usuario no autenticado")
+            val userDocRef = database.collection("users").document(userId)
+
+            userDocRef.set(mapOf("description" to description), SetOptions.merge()).await()
+
+            emit(Result.Success(Unit))
+        } catch (e: Exception) {
+            emit(Result.Error(e.message ?: "Error al guardar descripcion"))
+        }
+    }
+
+    fun loadDescription(): Flow<Result<String>> = flow {
+        emit(Result.Loading)
+        try {
+            val userId = auth.currentUser?.uid ?: throw Exception("usuario no encontrado")
+            val userDocRef = database.collection("users").document(userId).get().await()
+
+            val  description = userDocRef.getString("description") ?: ""
+
+            emit(Result.Success(description))
+
+        }catch (e: Exception){
+            emit(Result.Error(e.message ?: "Error al cargar la descripción."))
+
+        }
+    }
 }
